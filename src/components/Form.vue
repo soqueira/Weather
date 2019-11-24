@@ -78,32 +78,32 @@ export default {
         {
           name: 'Clear',
           img:
-            '/img/clear.52665b1c.png',
+            'https://i.imgur.com/pffqJGC.png',
         },
         {
           name: 'Sunny',
           img:
-            '/img/sun.93a6f93c.png',
+            'https://i.imgur.com/eVRhdy1.png',
         },
         {
           name: 'Drizzle',
           img:
-            '/img/drizzle.e750983d.png',
+            'https://i.imgur.com/Ge8ZwHe.png',
         },
         {
           name: 'Clouds',
           img:
-            '/img/cloud.30fb4fdc.png',
+            'https://i.imgur.com/xmTGTlB.png',
         },
         {
           name: 'Rain',
           img:
-            '/img/rain.d10b6c70.png',
+            'https://i.imgur.com/oQ1cDtG.png',
         },
         {
           name: 'Thunderstorm',
           img:
-            '/img/thunderstorm.8d5deced.png',
+            'https://i.imgur.com/dbYAIXB.png',
         },
       ],
       weatherMain: '',
@@ -133,6 +133,7 @@ export default {
     },
   },
   computed: {
+    // Kelvin to Celsius
     Celsius() {
       return Math.round(this.weatherData.main.temp - 273.15);
     },
