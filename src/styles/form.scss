@@ -1,0 +1,187 @@
+@import './src/styles/colors';
+
+.container {
+    width: 90%;
+    height: 80%;
+    background-image: url('https://i.imgur.com/kId17KA.jpg');
+    box-shadow: 0px 0px 38px -20px rgba(0, 0, 0, 0.75);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 60% 40%;
+
+    .weather {
+        color: #fff;
+        z-index: 1;
+    }
+
+    .weather-search {
+        background: $darkBlue;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        .weather-form {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 100%;
+            height: 100px;
+
+            input {
+                border: none;
+                border-bottom: 1px solid $whiteBlue;
+                width: 50%;
+                height: 40px;
+                padding: 10px 10px 0px 0px;
+                outline: none;
+                background: none;
+                color: $whiteBlue;
+
+                &::placeholder {
+                    color: $whiteBlue;
+                }
+            }
+
+            .btn {
+                padding: 15px;
+                border: 2px solid $lightBlue;
+                background-color: $lightBlue;
+                color: #fff;
+                outline: none;
+                cursor: pointer;
+                transition: .2s ease;
+
+                &:hover {
+                    background-color: $blue;
+                    border: 2px solid $blue;
+                    transition: .2s ease;
+                }
+            }
+        }
+
+        .weather-details {
+            width: 80%;
+            height: 50%;
+            border-top: 1px solid $lightBlue;
+            border-bottom: 1px solid $lightBlue;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+            .details {
+                padding: 35px 120px 0px 10px;
+                margin: 0;
+            }
+
+            .col1 {
+                width: 50%;
+
+                p {
+                    padding: 10px;
+                    color: $lightBlue;
+                }
+            }
+
+            .col2 {
+                text-align: right;
+                width: 50%;
+
+                p {
+                    padding: 10px;
+                }
+            }
+        }
+
+        .map a {
+            color: $lightBlue;
+            text-decoration: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: .2s;
+            .arrow {
+                width: 10px;
+                height: 10px;
+                fill: $blue;
+                transform: translateX(-50px);
+                opacity: 0;
+                transition: .3s;
+            }
+            &:hover {
+                color: $blue;
+            }
+            &:hover .arrow{
+                transform: translateX(0px);
+                opacity: 1;
+                transition: .3s;
+            }
+
+        }
+    }
+    .weather-display{
+        display: flex;
+        align-items: flex-end;
+        .weather-main{
+            width: 100%;
+            display: grid;
+            grid-template-columns: 22% 35% 15%;
+            grid-template-rows: 90%;
+            text-align: center;
+            justify-content: center;
+            margin: auto;
+            .temp{
+                font-size: 120px;
+                margin: 0;
+                padding: 0;
+            }
+            .dates{
+                margin: auto;
+                .city-name{
+                    font-size: 45px;
+                    margin: 0;
+                    padding: 0;
+                }
+                .time-now{
+                    margin: 0;
+                    padding: 0;
+                    font-size: 12px;
+                }
+            }
+            .climates{
+                margin: auto;
+                p{
+                    margin: 0;
+                    padding-bottom: 15px;
+                }
+            }
+        }
+    }
+    .bg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        z-index: 0;
+        background: inherit;
+        &::before{
+            content: '';
+            position: absolute;
+            width: 85%;
+            height: 80%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            filter: blur(5px);
+            background: inherit;
+        }
+    }
+    .weather-img{
+        width: 50px;
+        height: 50px;
+    }
+}

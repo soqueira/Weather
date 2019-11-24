@@ -1,0 +1,145 @@
+<template>
+  <div class="container">
+    <div class="bg"></div>
+    <div class="weather weather-display">
+      <div class="weather-main" v-if='country'>
+        <p class="temp">{{Celsius}}°</p>
+        <div class="dates">
+        <p class="city-name">{{city}}</p>
+        </div>
+        <div class="climates">
+          <div v-for='(climate, i) in climates' :key="i">
+            <div v-if="climate.name === weatherMain">
+            <p>{{climate.name}}</p>
+            <img class="weather-img" :src="climate.img" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="weather weather-search">
+      <div class="weather-form">
+        <input v-model='city' type="text" id="city" placeholder="Enter Your city" />
+        <button class="btn" @click.prevent.stop='getWeather()'>Search</button>
+      </div>
+      <div class="map">
+        <a href="#">
+          See {{city}} map here
+          <svg class="arrow" x="0px" y="0px" viewBox="0 0 477.175 477.175">
+            <g>
+              <path
+                d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,
+                0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5
+                c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3
+                ,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,
+                360.731,229.075z"
+              />
+            </g>
+          </svg>
+        </a>
+      </div>
+      <div class="weather-details">
+        <p class="details">Weather details</p>
+        <div class="col1">
+          <p>Humidity</p>
+          <p>Wind</p>
+          <p>Rain</p>
+          <p>Pressure</p>
+        </div>
+        <div class="col2">
+          <p>{{weatherData.main.humidity}} %</p>
+          <p>{{weatherData.wind.speed}} m/s</p>
+          <p v-if='weatherData.rain'>{{weatherData.rain['3h']}} mm</p>
+          <p v-if='!weatherData.rain'>0 mm</p>
+          <p>{{weatherData.main.pressure}} hpa</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+const axios = require('axios');
+
+export default {
+  name: 'Form',
+  created() {
+    this.getWeather();
+    this.getDateTimezone();
+  },
+  data() {
+    return {
+      city: 'Frutal',
+      country: '',
+      errorLog: '',
+      weatherData: [],
+      loader: false,
+      climates: [
+        {
+          name: 'Clear',
+          img:
+            '/img/clear.52665b1c.png',
+        },
+        {
+          name: 'Sunny',
+          img:
+            '/img/sun.93a6f93c.png',
+        },
+        {
+          name: 'Drizzle',
+          img:
+            '/img/drizzle.e750983d.png',
+        },
+        {
+          name: 'Clouds',
+          img:
+            '/img/cloud.30fb4fdc.png',
+        },
+        {
+          name: 'Rain',
+          img:
+            '/img/rain.d10b6c70.png',
+        },
+        {
+          name: 'Thunderstorm',
+          img:
+            '/img/thunderstorm.8d5deced.png',
+        },
+      ],
+      weatherMain: '',
+    };
+  },
+  methods: {
+    getWeather() {
+      this.loader = true;
+      this.errorLog = '';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=e09d7d063af31baf104769e9d39409b0`;
+      axios
+        .get(url)
+        .then((res) => {
+          this.weatherData = res.data;
+          // only to check if the data exist
+          this.country = this.weatherData.sys.country;
+          this.weatherMain = this.weatherData.weather[0].main;
+          // uppercase the first letter
+          this.city = this.city.charAt(0).toUpperCase() + this.city.slice(1);
+        })
+        .catch((error) => {
+          this.errorLog = error;
+        })
+        .finally(() => {
+          this.loader = false;
+        });
+    },
+  },
+  computed: {
+    Celsius() {
+      return Math.round(this.weatherData.main.temp - 273.15);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../styles/form";
+</style>
