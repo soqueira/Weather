@@ -23,7 +23,12 @@
         <button class="btn" @click.prevent.stop='getWeather()'>Search</button>
       </div>
       <div class="map">
-        <a href="#">
+        <router-link :to="{name: 'mapLoc', params:{
+              cityName: city,
+              lon: lon,
+              lat: lat
+            }
+          }">
           See {{city}} map here
           <svg class="arrow" x="0px" y="0px" viewBox="0 0 477.175 477.175">
             <g>
@@ -36,7 +41,7 @@
               />
             </g>
           </svg>
-        </a>
+        </router-link>
       </div>
       <div class="weather-details">
         <p class="details">Weather details</p>
@@ -65,7 +70,6 @@ export default {
   name: 'Form',
   created() {
     this.getWeather();
-    this.getDateTimezone();
   },
   data() {
     return {
@@ -107,6 +111,8 @@ export default {
         },
       ],
       weatherMain: '',
+      lon: '',
+      lat: '',
     };
   },
   methods: {
@@ -123,6 +129,8 @@ export default {
           this.weatherMain = this.weatherData.weather[0].main;
           // uppercase the first letter
           this.city = this.city.charAt(0).toUpperCase() + this.city.slice(1);
+          this.lon = this.weatherData.coord.lon;
+          this.lat = this.weatherData.coord.lat;
         })
         .catch((error) => {
           this.errorLog = error;
