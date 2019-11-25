@@ -12,7 +12,7 @@ const routes = [
     component: Home,
   },
   {
-    path: '/weather:cityName/:lon/:lat',
+    path: '/weather/:cityName/:lon/:lat',
     name: 'mapLoc',
     component: mapLoc,
     props: true,
