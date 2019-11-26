@@ -3,7 +3,7 @@
 .container {
     width: 90%;
     height: 80%;
-    background-image: url('https://i.imgur.com/kId17KA.jpg');
+    // background-image: url('https://i.imgur.com/kId17KA.jpg');
     box-shadow: 0px 0px 38px -20px rgba(0, 0, 0, 0.75);
     background-size: cover;
     background-repeat: no-repeat;
@@ -178,6 +178,23 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
+        z-index: 1;
+        background: inherit;
+
+
+    }
+
+    .weather-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .climateBg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
         z-index: 0;
         background: inherit;
 
@@ -192,10 +209,5 @@
             filter: blur(5px);
             background: inherit;
         }
-    }
-
-    .weather-img {
-        width: 50px;
-        height: 50px;
     }
 }

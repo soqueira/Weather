@@ -1,6 +1,11 @@
 <template>
-  <div class="container">
-    <div class="bg"></div>
+  <div class="container" >
+    <div class="bg" v-for='(climate, i) in climates' :key="i">
+      <transition name='fadeBg'>
+    <div class="climateBg" v-show="climate.name === weatherMain"
+    :style="{ backgroundImage: 'url(' + climate.bgImg + ')' }"></div>
+      </transition>
+    </div>
     <div class="weather weather-display">
       <div class="weather-main" v-if='country'>
         <p class="temp">{{Celsius}}°</p>
@@ -83,31 +88,49 @@ export default {
           name: 'Clear',
           img:
             'https://i.imgur.com/pffqJGC.png',
+          bgImg: 'https://cardinalwxservice.com/wp-content/uploads/2019/04/maxresdefault-3.jpg',
         },
         {
           name: 'Sunny',
           img:
             'https://i.imgur.com/eVRhdy1.png',
+          bgImg: 'https://www.chromethemer.com/wallpapers/chromebook-wallpapers/download/sunny-valley-3840x2160.jpg',
         },
         {
           name: 'Drizzle',
           img:
             'https://i.imgur.com/Ge8ZwHe.png',
+          bgImg: 'https://c.wallhere.com/photos/eb/69/sun_wet_water_rain_clouds_cloudy_portoalegre_rainy-1121947.jpg!d',
         },
         {
           name: 'Clouds',
           img:
             'https://i.imgur.com/xmTGTlB.png',
+          bgImg: 'https://rachelchoflowers.com/wp-content/uploads/2019/09/May-Gray-Got-You-Down-1.jpg',
         },
         {
           name: 'Rain',
           img:
             'https://i.imgur.com/oQ1cDtG.png',
+          bgImg: 'http://www.intermediachannel.it/wp-content/uploads/2014/07/Maltempo-Imc.jpg',
         },
         {
           name: 'Thunderstorm',
           img:
             'https://i.imgur.com/dbYAIXB.png',
+          bgImg: 'https://hdqwalls.com/download/lightning-storm-4k-ei-2560x1440.jpg',
+        },
+        {
+          name: 'Haze',
+          img:
+            'https://i.imgur.com/k6aaWMj.png',
+          bgImg: 'https://get.wallhere.com/photo/forest-sky-clouds-morning-mist-atmosphere-noisy-haze-cloud-fog-mountain-weather-2560x1440-px-atmospheric-phenomenon-atmosphere-of-earth-516383.jpg',
+        },
+        {
+          name: 'Fog',
+          img:
+            'https://i.imgur.com/k6aaWMj.png',
+          bgImg: 'https://wallpaperplay.com/walls/full/0/d/1/62615.jpg',
         },
       ],
       weatherMain: '',
@@ -151,4 +174,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/form";
+ .fadeBg-enter-active,
+        .fadeBg-leave-active {
+            transition-property: opacity;
+            transition-duration: .25s;
+        }
+
+        .fadeBg-enter-active {
+            transition-delay: .25s;
+        }
+
+        .fadeBg-enter,
+        .fadeBg-leave-active {
+            opacity: 0
+        }
 </style>
