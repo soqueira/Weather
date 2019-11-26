@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a href="javascript:history.go(-1)">Back</a>
     <GmapMap
       :center='{lat:lat, lng:lng}'
       :zoom='11'
@@ -244,13 +245,31 @@ export default {
     };
   },
   methods: {
-    setCoord() {
-      this.lat = this.$route.params.lat;
-      this.lng = this.$route.params.lon;
+    async setCoord() {
+      this.lat = parseFloat(this.$route.params.lat);
+      this.lng = parseFloat(this.$route.params.lon);
+      console.log(`${this.lat} ${this.lng}`);
     },
   },
 };
 </script>
 
 <style lang='scss' scoped>
+@import '../styles/colors';
+a{
+  padding: 10px 20px 10px 20px;
+  background-color: $blue;
+  z-index: 100;
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: .3s;
+  &:hover{
+    transition: .3s;
+    background-color: $darkBlue;
+  }
+}
 </style>

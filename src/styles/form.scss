@@ -45,7 +45,7 @@
             }
 
             .btn {
-                padding: 15px;
+                padding: 10px 20px 10px 20px;
                 border: 2px solid $lightBlue;
                 background-color: $lightBlue;
                 color: #fff;
@@ -100,6 +100,7 @@
             font-size: 20px;
             cursor: pointer;
             transition: .2s;
+
             .arrow {
                 width: 10px;
                 height: 10px;
@@ -108,10 +109,12 @@
                 opacity: 0;
                 transition: .3s;
             }
+
             &:hover {
                 color: $blue;
             }
-            &:hover .arrow{
+
+            &:hover .arrow {
                 transform: translateX(0px);
                 opacity: 1;
                 transition: .3s;
@@ -119,10 +122,12 @@
 
         }
     }
-    .weather-display{
+
+    .weather-display {
         display: flex;
         align-items: flex-end;
-        .weather-main{
+
+        .weather-main {
             width: 100%;
             display: grid;
             grid-template-columns: 22% 35% 15%;
@@ -130,34 +135,41 @@
             text-align: center;
             justify-content: center;
             margin: auto;
-            .temp{
+
+            .temp {
                 font-size: 120px;
                 margin: 0;
                 padding: 0;
             }
-            .dates{
+
+            .dates {
                 margin: auto;
-                .city-name{
+
+                .city-name {
                     font-size: 45px;
                     margin: 0;
                     padding: 0;
                 }
-                .time-now{
+
+                .time-now {
                     margin: 0;
                     padding: 0;
                     font-size: 12px;
                 }
             }
-            .climates{
+
+            .climates {
                 margin: auto;
-                p{
+
+                p {
                     margin: 0;
                     padding-bottom: 15px;
                 }
             }
         }
     }
-    .bg{
+
+    .bg {
         position: absolute;
         top: 0;
         left: 0;
@@ -168,19 +180,21 @@
         background-attachment: fixed;
         z-index: 0;
         background: inherit;
-        &::before{
+
+        &::before {
             content: '';
             position: absolute;
             width: 85%;
             height: 80%;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
             filter: blur(5px);
             background: inherit;
         }
     }
-    .weather-img{
+
+    .weather-img {
         width: 50px;
         height: 50px;
     }
