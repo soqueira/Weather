@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'mapLoc',
+  name: 'Gmap',
   created() {
     this.setCoord();
   },
@@ -248,7 +248,6 @@ export default {
     async setCoord() {
       this.lat = parseFloat(this.$route.params.lat);
       this.lng = parseFloat(this.$route.params.lon);
-      console.log(`${this.lat} ${this.lng}`);
     },
   },
 };

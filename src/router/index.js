@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-import mapLoc from '../views/mapLoc.vue';
+import Gmap from '../views/Gmap.vue';
 
 Vue.use(VueRouter);
 
@@ -13,8 +13,8 @@ const routes = [
   },
   {
     path: '/weather/:cityName/:lon/:lat',
-    name: 'mapLoc',
-    component: mapLoc,
+    name: 'Gmap',
+    component: Gmap,
     props: true,
   },
 ];

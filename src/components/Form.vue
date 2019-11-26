@@ -23,7 +23,7 @@
         <button class="btn" @click.prevent.stop='getWeather()'>Search</button>
       </div>
       <div class="map">
-        <router-link :to="{name: 'mapLoc', params:{
+        <router-link :to="{name: 'Gmap', params:{
               cityName: city,
               lon: lon,
               lat: lat
