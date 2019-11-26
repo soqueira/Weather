@@ -190,13 +190,12 @@ export default {
       const dataStorage = {
         city: this.city,
       };
-      localStorage.setItem('teste', JSON.stringify(dataStorage));
+      localStorage.setItem('cityStorage', JSON.stringify(dataStorage));
     },
     initLocalStorage() {
-      const localData = JSON.parse(localStorage.getItem('teste'));
+      const localData = JSON.parse(localStorage.getItem('cityStorage'));
       if (!localData.city) {
         this.randomCity();
-        this.getWeather();
         return;
       }
       this.city = localData.city;
@@ -205,6 +204,7 @@ export default {
     randomCity() {
       const cities = ['Paris', 'Mumbai', 'Vienna', 'Dubai', 'Kyoto', 'Frutal', 'Rio de Janeiro', 'São Paulo', 'Guarulhos'];
       this.city = cities[Math.floor(Math.random() * cities.length)];
+      this.getWeather();
     },
   },
   computed: {
