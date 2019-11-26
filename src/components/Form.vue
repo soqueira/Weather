@@ -1,30 +1,35 @@
 <template>
-  <div class="container" >
+  <div class="container">
+    <!-- background change transition -->
     <div class="bg" v-for='(climate, i) in climates' :key="i">
       <transition name='fadeBg'>
-    <div class="climateBg" v-show="climate.name === weatherMain"
+    <div class="climateBg" v-show="city && climate.name === weatherData.weather[0].main"
     :style="{ backgroundImage: 'url(' + climate.bgImg + ')' }"></div>
       </transition>
     </div>
+
     <div class="weather weather-display">
-      <div class="weather-main" v-if='country'>
+    <template v-if="city">
+      <div class="weather-main">
         <p class="temp">{{Celsius}}°</p>
         <div class="dates">
         <p class="city-name">{{city}}</p>
         </div>
         <div class="climates">
           <div v-for='(climate, i) in climates' :key="i">
-            <div v-if="climate.name === weatherMain">
-            <p>{{climate.name}}</p>
+            <div v-if="city && climate.name === weatherData.weather[0].main">
+            <p>{{weatherData.weather[0].description}}</p>
             <img class="weather-img" :src="climate.img" alt="">
             </div>
           </div>
         </div>
       </div>
+    </template>
     </div>
     <div class="weather weather-search">
       <div class="weather-form">
-        <input v-model='city' type="text" id="city" placeholder="Enter Your city" />
+        <input autocomplete="off" v-model='city'
+        type="text" id="city" placeholder="Enter Your city">
         <button class="btn" @click.prevent.stop='getWeather()'>Search</button>
       </div>
       <div class="map">
@@ -56,13 +61,15 @@
           <p>Rain</p>
           <p>Pressure</p>
         </div>
+        <template v-if="city">
         <div class="col2">
-          <p>{{weatherData.main.humidity}} %</p>
+          <p>{{weather.humidity}} %</p>
           <p>{{weatherData.wind.speed}} m/s</p>
-          <p v-if='weatherData.rain'>{{weatherData.rain['3h']}} mm</p>
+          <p v-if='weatherData.rain'>{{weather.rain}} mm</p>
           <p v-if='!weatherData.rain'>0 mm</p>
-          <p>{{weatherData.main.pressure}} hpa</p>
+          <p>{{weather.pressure}} hpa</p>
         </div>
+        </template>
       </div>
     </div>
   </div>
@@ -74,15 +81,22 @@ const axios = require('axios');
 export default {
   name: 'Form',
   created() {
-    this.getWeather();
+    this.initLocalStorage();
   },
   data() {
     return {
-      city: 'Frutal',
+      city: '',
       country: '',
       errorLog: '',
       weatherData: [],
-      loader: false,
+      lon: '',
+      lat: '',
+      description: '',
+      weather: {
+        humidity: '',
+        rain: '',
+        pressure: '',
+      },
       climates: [
         {
           name: 'Clear',
@@ -133,34 +147,64 @@ export default {
           bgImg: 'https://wallpaperplay.com/walls/full/0/d/1/62615.jpg',
         },
       ],
-      weatherMain: '',
-      lon: '',
-      lat: '',
     };
   },
   methods: {
     getWeather() {
-      this.loader = true;
+      this.getDataStorage();
+      if (!this.city) return;
       this.errorLog = '';
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=e09d7d063af31baf104769e9d39409b0`;
       axios
         .get(url)
         .then((res) => {
           this.weatherData = res.data;
-          // only to check if the data exist
+          // only to validate if exist an city
           this.country = this.weatherData.sys.country;
-          this.weatherMain = this.weatherData.weather[0].main;
-          // uppercase the first letter
-          this.city = this.city.charAt(0).toUpperCase() + this.city.slice(1);
-          this.lon = this.weatherData.coord.lon;
-          this.lat = this.weatherData.coord.lat;
+        })
+        .then(() => {
+          // inserts weather details
+          this.weather.humidity = this.weatherData.main.humidity;
+          this.weather.pressure = this.weatherData.main.pressure;
+          this.weather.rain = this.weatherData.rain['3h'];
         })
         .catch((error) => {
           this.errorLog = error;
         })
         .finally(() => {
-          this.loader = false;
+          this.upperFirstCase();
+          this.setCoord();
         });
+    },
+    setCoord() {
+      this.lon = this.weatherData.coord.lon;
+      this.lat = this.weatherData.coord.lat;
+    },
+    upperFirstCase() {
+      // this.description = this.weatherData.weather[0].description;
+      // uppercase the first letter
+      this.city = this.city.charAt(0).toUpperCase() + this.city.slice(1);
+      this.description = this.description.charAt(0).toUpperCase() + this.description.slice(1);
+    },
+    getDataStorage() {
+      const dataStorage = {
+        city: this.city,
+      };
+      localStorage.setItem('teste', JSON.stringify(dataStorage));
+    },
+    initLocalStorage() {
+      const localData = JSON.parse(localStorage.getItem('teste'));
+      if (!localData.city) {
+        this.randomCity();
+        this.getWeather();
+        return;
+      }
+      this.city = localData.city;
+      this.getWeather();
+    },
+    randomCity() {
+      const cities = ['Paris', 'Mumbai', 'Vienna', 'Dubai', 'Kyoto', 'Frutal', 'Rio de Janeiro', 'São Paulo', 'Guarulhos'];
+      this.city = cities[Math.floor(Math.random() * cities.length)];
     },
   },
   computed: {
