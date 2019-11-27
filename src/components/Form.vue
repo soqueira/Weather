@@ -3,7 +3,7 @@
     <!-- background change transition -->
     <div class="bg" v-for='(climate, i) in climates' :key="i">
       <transition name='fadeBg'>
-    <div class="climateBg" v-show="city && climate.name === weatherData.weather[0].main"
+    <div class="climateBg" v-show="city && climate.name === weather.name"
     :style="{ backgroundImage: 'url(' + climate.bgImg + ')' }"></div>
       </transition>
     </div>
@@ -11,14 +11,14 @@
     <div class="weather weather-display">
     <template v-if="city">
       <div class="weather-main">
-        <p class="temp">{{Celsius}}°</p>
+        <p class="temp">{{weather.Celsius}}°</p>
         <div class="dates">
         <p class="city-name">{{city}}</p>
         </div>
         <div class="climates">
           <div v-for='(climate, i) in climates' :key="i">
-            <div v-if="city && climate.name === weatherData.weather[0].main">
-            <p>{{weatherData.weather[0].description}}</p>
+            <div v-if="city && climate.name === weather.name">
+            <p>{{weather.description}}</p>
             <img class="weather-img" :src="climate.img" alt="">
             </div>
           </div>
@@ -64,9 +64,9 @@
         <template v-if="city">
         <div class="col2">
           <p>{{weather.humidity}} %</p>
-          <p>{{weatherData.wind.speed}} m/s</p>
-          <p v-if='weatherData.rain'>{{weather.rain}} mm</p>
-          <p v-if='!weatherData.rain'>0 mm</p>
+          <p>{{weather.speed}} m/s</p>
+          <p>{{weather.rain}} mm</p>
+          <!-- <p v-if='!weatherData.rain'>0 mm</p> -->
           <p>{{weather.pressure}} hpa</p>
         </div>
         </template>
@@ -91,11 +91,14 @@ export default {
       weatherData: [],
       lon: '',
       lat: '',
-      description: '',
       weather: {
+        name: '',
+        description: '',
         humidity: '',
         rain: '',
         pressure: '',
+        Celsius: '',
+        speed: '',
       },
       climates: [
         {
@@ -164,9 +167,20 @@ export default {
         })
         .then(() => {
           // inserts weather details
+          this.weather.name = this.weatherData.weather[0].main;
+          this.weather.description = this.weatherData.weather[0].description;
           this.weather.humidity = this.weatherData.main.humidity;
           this.weather.pressure = this.weatherData.main.pressure;
-          this.weather.rain = this.weatherData.rain['3h'];
+          this.weather.speed = this.weatherData.wind.speed;
+          // kelvin to celsius
+          this.weather.Celsius = this.weatherData.main.temp - 273.15;
+          this.weather.Celsius = Math.round(this.weather.Celsius);
+          // check if rain millimeter exist on JSON
+          if (this.weatherData.rain === undefined) {
+            this.weather.rain = 0;
+          } else {
+            this.weather.rain = this.weatherData.rain['3h'];
+          }
         })
         .catch((error) => {
           this.errorLog = error;
@@ -184,7 +198,8 @@ export default {
       // this.description = this.weatherData.weather[0].description;
       // uppercase the first letter
       this.city = this.city.charAt(0).toUpperCase() + this.city.slice(1);
-      this.description = this.description.charAt(0).toUpperCase() + this.description.slice(1);
+      this.weather.description = this.weather.description
+        .charAt(0).toUpperCase() + this.weather.description.slice(1);
     },
     getDataStorage() {
       const dataStorage = {
@@ -196,6 +211,7 @@ export default {
       const localData = JSON.parse(localStorage.getItem('cityStorage'));
       if (!localData.city) {
         this.randomCity();
+        this.getWeather();
         return;
       }
       this.city = localData.city;
@@ -204,13 +220,6 @@ export default {
     randomCity() {
       const cities = ['Paris', 'Mumbai', 'Vienna', 'Dubai', 'Kyoto', 'Frutal', 'Rio de Janeiro', 'São Paulo', 'Guarulhos'];
       this.city = cities[Math.floor(Math.random() * cities.length)];
-      this.getWeather();
-    },
-  },
-  computed: {
-    // Kelvin to Celsius
-    Celsius() {
-      return Math.round(this.weatherData.main.temp - 273.15);
     },
   },
 };
