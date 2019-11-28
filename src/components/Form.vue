@@ -135,7 +135,7 @@ export default {
           name: 'Thunderstorm',
           img:
             'https://i.imgur.com/dbYAIXB.png',
-          bgImg: 'https://hdqwalls.com/download/lightning-storm-4k-ei-2560x1440.jpg',
+          bgImg: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Lightning_Pritzerbe_01_%28MK%29.jpg',
         },
         {
           name: 'Haze',
@@ -177,7 +177,7 @@ export default {
           this.weather.speed = this.weatherData.wind.speed;
           // kelvin to celsius
           this.weather.Celsius = this.weatherData.main.temp - 273.15;
-          this.weather.Celsius = Math.round(this.weather.Celsius);
+          this.weather.Celsius = `${Math.round(this.weather.Celsius)}°`;
           // check if rain millimeter exist on JSON
           if (this.weatherData.rain === undefined) {
             this.weather.rain = 0;
@@ -187,7 +187,7 @@ export default {
         })
         .catch((error) => {
           this.errorLog = true;
-          this.weather.name = 'Error';
+          this.weather.name = error;
         })
         .finally(() => {
           this.upperFirstCase();
