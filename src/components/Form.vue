@@ -62,12 +62,11 @@
           <p>Rain</p>
           <p>Pressure</p>
         </div>
-        <template v-if="city">
+        <template v-if="city && !errorLog">
         <div class="col2">
           <p>{{weather.humidity}} %</p>
           <p>{{weather.speed}} m/s</p>
           <p>{{weather.rain}} mm</p>
-          <!-- <p v-if='!weatherData.rain'>0 mm</p> -->
           <p>{{weather.pressure}} hpa</p>
         </div>
         </template>
@@ -144,6 +143,12 @@ export default {
           bgImg: 'https://get.wallhere.com/photo/forest-sky-clouds-morning-mist-atmosphere-noisy-haze-cloud-fog-mountain-weather-2560x1440-px-atmospheric-phenomenon-atmosphere-of-earth-516383.jpg',
         },
         {
+          name: 'Mist',
+          img:
+            'https://i.imgur.com/k6aaWMj.png',
+          bgImg: 'https://get.wallhere.com/photo/forest-sky-clouds-morning-mist-atmosphere-noisy-haze-cloud-fog-mountain-weather-2560x1440-px-atmospheric-phenomenon-atmosphere-of-earth-516383.jpg',
+        },
+        {
           name: 'Fog',
           img:
             'https://i.imgur.com/k6aaWMj.png',
@@ -181,6 +186,8 @@ export default {
           // check if rain millimeter exist on JSON
           if (this.weatherData.rain === undefined) {
             this.weather.rain = 0;
+          } else if (this.weatherData.rain['3h'] === undefined) {
+            this.weather.rain = this.weatherData.rain['1h'];
           } else {
             this.weather.rain = this.weatherData.rain['3h'];
           }
