@@ -2,12 +2,12 @@ import { mount } from '@vue/test-utils';
 import Form from '@/components/Form.vue';
 
 describe('Form.vue', () => {
-  it('ajax call returns city', () => {
+  it('return a random city if city is not defined', () => {
     const wrapper = mount(Form, {
       stubs: ["router-link", "router-view"],
     });
     const vm = wrapper.vm;
-    wrapper.vm.initLocalStorage();
+    vm.initLocalStorage();
     expect(vm.city).toBeTruthy();
   });
 });

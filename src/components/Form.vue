@@ -9,9 +9,10 @@
     </div>
 
     <div class="weather weather-display">
-    <template v-if="city">
+      <div class="error" v-if='errorLog'>City Not Found</div>
+    <template v-if="city && !errorLog">
       <div class="weather-main">
-        <p class="temp">{{weather.Celsius}}°</p>
+        <p class="temp">{{weather.Celsius}}</p>
         <div class="dates">
         <p class="city-name">{{city}}</p>
         </div>
@@ -86,8 +87,7 @@ export default {
   data() {
     return {
       city: '',
-      country: '',
-      errorLog: '',
+      errorLog: false,
       weatherData: [],
       lon: '',
       lat: '',
@@ -149,6 +149,11 @@ export default {
             'https://i.imgur.com/k6aaWMj.png',
           bgImg: 'https://wallpaperplay.com/walls/full/0/d/1/62615.jpg',
         },
+        {
+          name: 'Error',
+          img: '',
+          bgImg: '',
+        },
       ],
     };
   },
@@ -156,14 +161,12 @@ export default {
     getWeather() {
       this.getDataStorage();
       if (!this.city) return;
-      this.errorLog = '';
+      this.errorLog = false;
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=e09d7d063af31baf104769e9d39409b0`;
       axios
         .get(url)
         .then((res) => {
           this.weatherData = res.data;
-          // only to validate if exist an city
-          this.country = this.weatherData.sys.country;
         })
         .then(() => {
           // inserts weather details
@@ -183,7 +186,8 @@ export default {
           }
         })
         .catch((error) => {
-          this.errorLog = error;
+          this.errorLog = true;
+          this.weather.name = 'Error';
         })
         .finally(() => {
           this.upperFirstCase();
