@@ -1,6 +1,6 @@
 # WEATHER
 
-### for studies only
+### Only for studies
 
 ## Project setup
 ```
