@@ -209,9 +209,8 @@ export default {
     },
     initLocalStorage() {
       const localData = JSON.parse(localStorage.getItem('cityStorage'));
-      if (!localData.city) {
+      if (localData === null) {
         this.randomCity();
-        this.getWeather();
         return;
       }
       this.city = localData.city;
@@ -220,6 +219,7 @@ export default {
     randomCity() {
       const cities = ['Paris', 'Mumbai', 'Vienna', 'Dubai', 'Kyoto', 'Frutal', 'Rio de Janeiro', 'São Paulo', 'Guarulhos'];
       this.city = cities[Math.floor(Math.random() * cities.length)];
+      this.getWeather();
     },
   },
 };
