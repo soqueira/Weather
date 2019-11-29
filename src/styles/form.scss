@@ -1,34 +1,5 @@
-@import './src/styles/colors';
-
-@mixin for-phone-only {
-    @media (max-width: 599px) {
-        @content;
-    }
-}
-
-@mixin for-tablet-portrait-up {
-    @media (min-width: 600px) and (max-width: 768px) {
-        @content;
-    }
-}
-
-@mixin for-tablet-landscape-up {
-    @media (min-width: 900px) and (max-width: 1119px) {
-        @content;
-    }
-}
-
-@mixin for-desktop-up {
-    @media (min-width: 1200px) {
-        @content;
-    }
-}
-
-@mixin for-big-desktop-up {
-    @media (min-width: 1800px) {
-        @content;
-    }
-}
+@import './colors.scss';
+@import './queries.scss';
 
 .container {
     width: 90%;
@@ -133,6 +104,10 @@
                 @include for-tablet-portrait-up {
                     padding: 0;
                 }
+
+                @include for-big-desktop-up {
+                    padding: 15px 60% 0px 0px;
+                }
             }
 
             .col1 {
@@ -209,22 +184,25 @@
             text-align: center;
             justify-content: center;
             margin: auto;
+            align-content: center;
 
             @include for-phone-only {
                 grid-template-columns: 50%;
                 grid-template-rows: 100% 65% 70%;
-                align-content: center;
             }
 
             @include for-tablet-portrait-up {
-                align-content: center;
                 grid-template-columns: 50%;
                 grid-template-rows: 40% 40% 40%;
             }
-            @include for-tablet-landscape-up{
-                align-content: center;
+
+            @include for-tablet-landscape-up {
                 grid-template-columns: 50%;
                 grid-template-rows: 50% 50% 50%;
+            }
+
+            @include for-desktop-up {
+                grid-template-columns: 30% 35% 20%;
             }
 
             .temp {
