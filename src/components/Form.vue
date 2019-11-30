@@ -3,7 +3,7 @@
     <!-- background change transition -->
     <div class="bg" v-for='(climate, i) in climates' :key="i">
       <transition name='fadeBg'>
-    <div class="climateBg" v-show="city && climate.name === weather.name"
+    <div class="climateBg" v-show="city && climate.name === weather.main"
     :style="{ backgroundImage: 'url(' + climate.bgImg + ')' }"></div>
       </transition>
     </div>
@@ -12,13 +12,13 @@
       <div class="error" v-if='errorLog'>City Not Found</div>
     <template v-if="city && !errorLog">
       <div class="weather-main">
-        <p class="temp">{{weather.Celsius}}</p>
+        <p class="temp">{{Math.round(weather.celsius) + '°'}}</p>
         <div class="dates">
         <p class="city-name">{{city}}</p>
         </div>
         <div class="climates">
           <div v-for='(climate, i) in climates' :key="i">
-            <div v-if="city && climate.name === weather.name">
+            <div v-if="city && climate.name === weather.main">
             <p>{{weather.description}}</p>
             <img class="weather-img" :src="climate.img" alt="">
             </div>
@@ -91,12 +91,12 @@ export default {
       lon: '',
       lat: '',
       weather: {
-        name: '',
+        main: '',
         description: '',
         humidity: '',
         rain: '',
         pressure: '',
-        Celsius: '',
+        celsius: '',
         speed: '',
       },
       climates: [
@@ -174,15 +174,15 @@ export default {
           this.weatherData = res.data;
         })
         .then(() => {
-          // inserts weather details
-          this.weather.name = this.weatherData.weather[0].main;
-          this.weather.description = this.weatherData.weather[0].description;
-          this.weather.humidity = this.weatherData.main.humidity;
-          this.weather.pressure = this.weatherData.main.pressure;
-          this.weather.speed = this.weatherData.wind.speed;
-          // kelvin to celsius
-          this.weather.Celsius = this.weatherData.main.temp - 273.15;
-          this.weather.Celsius = `${Math.round(this.weather.Celsius)}°`;
+          this.weather = Object.assign({
+            main: this.weatherData.weather[0].main,
+            description: this.weatherData.weather[0].description,
+            humidity: this.weatherData.main.humidity,
+            pressure: this.weatherData.main.pressure,
+            speed: this.weatherData.wind.speed,
+            // kelvin to celsius
+            celsius: this.weatherData.main.temp - 273.15,
+          });
           // check if rain millimeter exist on JSON
           if (this.weatherData.rain === undefined) {
             this.weather.rain = 0;
