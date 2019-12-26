@@ -12,7 +12,7 @@
       <div class="error" v-if='errorLog'>City Not Found</div>
     <template v-if="city && !errorLog">
       <div class="weather-main">
-        <p class="temp">{{Math.round(weather.celsius) + '°'}}</p>
+        <p class="temp">{{parseFloat(weather.celsius).toFixed(0) + '°'}}</p>
         <div class="dates">
         <p class="city-name">{{city}}</p>
         </div>
