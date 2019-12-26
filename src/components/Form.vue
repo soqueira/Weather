@@ -96,7 +96,7 @@ export default {
         humidity: '',
         rain: '',
         pressure: '',
-        celsius: '',
+        celsius: null || 0,
         speed: '',
       },
       climates: [
